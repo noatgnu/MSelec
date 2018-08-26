@@ -17,19 +17,20 @@ export class HomeComponent implements OnInit {
     this.remote = this.electron.remote;
 
     this.navigation(this.renderer, this.remote);
-  }S
+  }
 
   private navigation(renderer, remote) {
     renderer.on('nav', function (event, arg) {
       const BrowserWindow = remote.BrowserWindow;
       var win = new BrowserWindow({
-        width: 500,
-        height: 400,
+        width: 700,
+        height: 350,
         center: true,
         resizable: false,
         frame: true,
         transparent: false,
       });
+      win.webContents.openDevTools();
       win.loadURL(`file://${__dirname}/index.html#/${arg}`);
       win.setMenu(null);
     })

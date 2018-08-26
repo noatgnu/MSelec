@@ -20,8 +20,12 @@ import { WebviewDirective } from './directives/webview.directive';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { MsReformatComponent } from './components/ms-reformat/ms-reformat.component';
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+
 import {WebSocketService} from "./providers/web-socket.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {MatCheckboxModule, MatButtonModule, MatInputModule, MatFormFieldModule} from "@angular/material";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -41,8 +45,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    NgbModule,
     ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    FlexLayoutModule,
+    BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

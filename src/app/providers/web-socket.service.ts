@@ -12,6 +12,6 @@ export class WebSocketService {
   }
 
   sendToMain(msg) {
-    this.ipcRenderer.send('ws', msg)
+    this.ipcRenderer.send('ws-job', msg)
   }
 }

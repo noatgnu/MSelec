@@ -74,7 +74,7 @@ function navWin(route) {
 
 function closeWS() {
   if (ws != null) {
-    ws.send(JSON.stringify({ event: 'shutdown', data: true }));
+    ws.send(JSON.stringify({ event: 'shutdown', msg: {name: 'shutdown', data:{ion:"test", fdr:0.005}} }));
     ws.close();
   }
 }
@@ -113,7 +113,7 @@ try {
 ws = new WebSocket('ws://127.0.0.1:8888/ui');
 ws.on('open', () => {
   console.log('WebSocket Client Connected');
-  ws.send(JSON.stringify({ event: 'connected', data: true }));
+  ws.send(JSON.stringify({ event: 'connected', msg: {name: 'connection', data: true} }));
 });
 
 ws.on('close', () => {
@@ -125,7 +125,7 @@ ws.on('message', msg => {
   console.log('Received: ', msg);
 });
 console.log('WebSocket Connection Service assigned.');
-ipcMain.on('ws', function (event, arg) {
+ipcMain.on('ws-job', function (event, arg) {
   console.log(arg);
-  ws.send(JSON.stringify({event: 'msg', data: arg}))
+  ws.send(JSON.stringify({event: 'job', msg: {name: 'msreformat', data: arg}}))
 });
