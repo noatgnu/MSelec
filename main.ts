@@ -2,6 +2,7 @@ import { app, BrowserWindow, screen, Menu, ipcMain } from 'electron';
 import * as WebSocket from 'ws';
 import * as path from 'path';
 import * as url from 'url';
+import * as child_process from 'child_process';
 
 
 let ws = null;
@@ -9,7 +10,7 @@ let win, serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 
-
+const be = child_process.spawn(path.resolve(__dirname, 'cmd', '"msWeave.exe"'), [], {shell: true});
 function createWindow() {
 
   const electronScreen = screen;
@@ -69,12 +70,12 @@ function createMenu(win) {
 }
 
 function navWin(route) {
-  win.webContents.send('nav', route)
+  win.webContents.send('nav', route);
 }
 
 function closeWS() {
   if (ws != null) {
-    ws.send(JSON.stringify({ event: 'shutdown', msg: {name: 'shutdown', data:{ion:"test", fdr:0.005}} }));
+    ws.send(JSON.stringify({ event: 'shutdown', msg: {name: 'shutdown', data: {ion: 'test', fdr: 0.005}} }));
     ws.close();
   }
 }
@@ -127,5 +128,5 @@ ws.on('message', msg => {
 console.log('WebSocket Connection Service assigned.');
 ipcMain.on('ws-job', function (event, arg) {
   console.log(arg);
-  ws.send(JSON.stringify({event: 'job', msg: {name: 'msreformat', data: arg}}))
+  ws.send(JSON.stringify({event: 'job', msg: {name: 'msreformat', data: arg}}));
 });
