@@ -11,6 +11,7 @@ const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 
 const be = child_process.spawn(path.resolve(__dirname, 'cmd', '"msWeave.exe"'), [], {shell: true});
+
 function createWindow() {
 
   const electronScreen = screen;

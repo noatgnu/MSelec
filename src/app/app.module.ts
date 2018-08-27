@@ -25,7 +25,7 @@ import {WebSocketService} from "./providers/web-socket.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {MatCheckboxModule, MatButtonModule, MatInputModule, MatFormFieldModule} from "@angular/material";
+import {MatCheckboxModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatCardModule} from '@angular/material';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -51,6 +51,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatInputModule,
     MatCheckboxModule,
     FlexLayoutModule,
+    MatCardModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {
