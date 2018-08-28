@@ -21,11 +21,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { MsReformatComponent } from './components/ms-reformat/ms-reformat.component';
 
-import {WebSocketService} from "./providers/web-socket.service";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {WebSocketService} from './providers/web-socket.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import {FlexLayoutModule} from "@angular/flex-layout";
+import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatCheckboxModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatCardModule} from '@angular/material';
+import {FileService} from './providers/file.service';
+import { RecentJobsComponent } from './components/recent-jobs/recent-jobs.component';
+import {D3Service} from 'd3-ng2-service';
+import {MsSpectrumViewerComponent} from './components/ms-spectrum-viewer/ms-spectrum-viewer.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -38,7 +42,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeComponent,
     WebviewDirective,
     MsReformatComponent,
-
+    RecentJobsComponent,
+    MsSpectrumViewerComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +66,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ElectronService, WebSocketService],
+  providers: [ElectronService, WebSocketService, FileService, D3Service],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

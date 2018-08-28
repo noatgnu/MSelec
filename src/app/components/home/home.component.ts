@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ElectronService} from "../../providers/electron.service";
 import {WebSocketService} from "../../providers/web-socket.service";
+import {FileService} from '../../providers/file.service';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import {WebSocketService} from "../../providers/web-socket.service";
 export class HomeComponent implements OnInit {
   private renderer;
   private remote;
-  constructor(private electron: ElectronService, private webSocket: WebSocketService) { }
+  constructor(private electron: ElectronService, private webSocket: WebSocketService, private fileStorage: FileService) { }
 
   ngOnInit() {
     this.renderer = this.electron.ipcRenderer;
@@ -22,8 +23,8 @@ export class HomeComponent implements OnInit {
   private navigation(renderer, remote) {
     renderer.on('nav', function (event, arg) {
       const BrowserWindow = remote.BrowserWindow;
-      var win = new BrowserWindow({
-        width: 700,
+      const win = new BrowserWindow({
+        width: 600,
         height: 350,
         center: true,
         resizable: false,
@@ -33,7 +34,7 @@ export class HomeComponent implements OnInit {
       win.webContents.openDevTools();
       win.loadURL(`file://${__dirname}/index.html#/${arg}`);
       win.setMenu(null);
-    })
+    });
   }
 
 }

@@ -24,16 +24,16 @@ export class Storage {
   private _Data;
 
   LoadData(filePath: string) {
-    const path = fs.readFileSync(filePath, "utf8")
+    const path = fs.readFileSync(filePath, 'utf8');
     if (fs.existsSync(path)) {
       return JSON.parse(path);
     } else {
-      return null
+      return null;
     }
   }
 
   StoreData(filePath: string, data: any) {
-    fs.writeFileSync(filePath, JSON.stringify(data))
+    fs.writeFileSync(filePath, JSON.stringify(data));
   }
 
   SetData(key, value) {
@@ -41,6 +41,6 @@ export class Storage {
   }
 
   GetData(key) {
-    return this.Data[key]
+    return this.Data[key];
   }
 }
