@@ -28,6 +28,8 @@ export class MsMsDataBrowserComponent implements OnInit {
 
   createMenu() {
     const pif = this.pickIonFile;
+    const a = this.fileService;
+    const w = this.webSocket;
     const template = [
       {
         label: 'File',
@@ -35,7 +37,7 @@ export class MsMsDataBrowserComponent implements OnInit {
           {
             label: 'Load File',
             click() {
-              pif("swath")
+              pif("swath", a, w)
             }
           }
         ]
@@ -45,10 +47,10 @@ export class MsMsDataBrowserComponent implements OnInit {
     this.currentWindow.setMenu(this.electron.remote.Menu.buildFromTemplate(template));
   }
 
-  pickIonFile(fileType: string) {
-    const picked = this.fileService.pickFile();
+  pickIonFile(fileType: string, a, w) {
+    const picked = a.pickFile();
     if (picked !== undefined) {
-      this.webSocket.sendToMain({job: 'msmsfile', data: {filePath: picked, fileType: fileType}});
+      w.sendToMain({job: 'msmsfile', data: {filePath: picked[0], fileType: fileType}});
     }
   }
 }
