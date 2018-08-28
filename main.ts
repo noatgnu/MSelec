@@ -63,6 +63,13 @@ function createMenu(win) {
           click() {
             navWin('msreformat');
           }
+        },
+        {
+          label: 'MS/MS Data Browser',
+          click() {
+            navMS();
+            //navWin('msmsbrowser');
+          }
         }
       ]
     }
@@ -72,6 +79,20 @@ function createMenu(win) {
 
 function navWin(route) {
   win.webContents.send('nav', route);
+}
+
+function navMS() {
+  const arg = 'msmsbrowser';
+  const electronScreen = screen;
+  const size = electronScreen.getPrimaryDisplay().workAreaSize;
+  const win = new BrowserWindow({
+    x: 0,
+    y: 0,
+    width: size.width,
+    height: size.height,
+  });
+  win.loadURL('file://'+__dirname+'/dist/index.html#' + arg);
+  win.setMenu(null);
 }
 
 function closeWS() {
@@ -86,7 +107,7 @@ try {
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
-  app.getPath('userData')
+  app.getPath('userData');
   app.on('ready', createWindow);
 
   // Quit when all windows are closed.
@@ -129,5 +150,5 @@ ws.on('message', msg => {
 console.log('WebSocket Connection Service assigned.');
 ipcMain.on('ws-job', function (event, arg) {
   console.log(arg);
-  ws.send(JSON.stringify({event: 'job', msg: {name: 'msreformat', data: arg}}));
+  ws.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
 });

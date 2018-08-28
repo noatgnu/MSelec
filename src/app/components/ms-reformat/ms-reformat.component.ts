@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ElectronService} from "../../providers/electron.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {WebSocketService} from "../../providers/web-socket.service";
+import {FileService} from "../../providers/file.service";
 
 
 @Component({
@@ -13,7 +14,7 @@ export class MsReformatComponent implements OnInit {
   form: FormGroup;
   labels = {ion: '', fdr: '', output: ''};
   private remote;
-  constructor(private electron: ElectronService, private _fb: FormBuilder, private webSocket: WebSocketService) {
+  constructor(private electron: ElectronService, private _fb: FormBuilder, private webSocket: WebSocketService, private fileService: FileService) {
     this.remote = electron.remote;
   }
 
@@ -37,14 +38,13 @@ export class MsReformatComponent implements OnInit {
   }
 
   clicked(){
-    this.webSocket.sendToMain(this.form.value);
+    this.webSocket.sendToMain({job: 'msreformat', data: this.form.value});
     const current = this.remote.getCurrentWindow();
     current.close();
   }
 
   pickOpenFile(key){
-    const {dialog} = this.electron.remote;
-    const picked = dialog.showOpenDialog({properties: ['openFile']});
+    const picked = this.fileService.pickFile();
     if (picked !== undefined) {
       this.labels[key] = picked[0].split(/.*[\/|\\]/)[1];
       this.form.controls[key].setValue(picked[0]);
@@ -52,8 +52,7 @@ export class MsReformatComponent implements OnInit {
   }
 
   pickSaveFile(key){
-    const {dialog} = this.electron.remote;
-    const picked = dialog.showSaveDialog(this.remote.getCurrentWindow());
+    const picked = this.fileService.save();
     if (picked !== undefined) {
       this.labels[key] = picked.split(/.*[\/|\\]/)[1];
       this.form.controls[key].setValue(picked);

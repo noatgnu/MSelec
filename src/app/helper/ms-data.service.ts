@@ -8,8 +8,8 @@ import {D3} from 'd3-ng2-service';
   providedIn: 'root'
 })
 export class MsDataService {
-  testData = new MsSpectrum('test', [new MsElement(100, 10, 6, 0), new MsElement(50, 100, 6, 1)]);
-  private viewerData = new BehaviorSubject<MsSpectrum>(this.testData);
+  //testData = new MsSpectrum('test', [new MsElement(100, 10, 6, 0), new MsElement(50, 100, 6, 1)]);
+  private viewerData = new BehaviorSubject<MsSpectrum>(null);
   viewerDataReader = this.viewerData.asObservable();
   constructor() { }
 

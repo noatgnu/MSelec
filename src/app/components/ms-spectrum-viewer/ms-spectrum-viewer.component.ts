@@ -3,9 +3,6 @@ import { D3Service, D3, Selection } from 'd3-ng2-service';
 import {MsDataService} from '../../helper/ms-data.service';
 import {MsSpectrum} from '../../helper/ms-spectrum';
 
-
-
-
 @Component({
   selector: 'app-ms-spectrum-viewer',
   templateUrl: './ms-spectrum-viewer.component.html',

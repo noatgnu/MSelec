@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import * as fs from 'fs';
+import {Injectable} from '@angular/core';
 import * as path from 'path';
 import {ElectronService} from './electron.service';
 import {Storage} from '../helper/storage';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +40,15 @@ export class FileService {
 
   getSettings() {
     this._settings = new Storage(path.join(this._userDataPath, '_settings.json'));
+  }
+
+  save() {
+    const {dialog} = this.electron.remote;
+    return dialog.showSaveDialog(this.remote.getCurrentWindow());
+  }
+
+  pickFile() {
+    const {dialog} = this.electron.remote;
+    return dialog.showOpenDialog({properties: ['openFile']});
   }
 }

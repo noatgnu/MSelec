@@ -30,6 +30,7 @@ import {FileService} from './providers/file.service';
 import { RecentJobsComponent } from './components/recent-jobs/recent-jobs.component';
 import {D3Service} from 'd3-ng2-service';
 import {MsSpectrumViewerComponent} from './components/ms-spectrum-viewer/ms-spectrum-viewer.component';
+import { MsMsDataBrowserComponent } from './components/ms-ms-data-browser/ms-ms-data-browser.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -44,6 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MsReformatComponent,
     RecentJobsComponent,
     MsSpectrumViewerComponent,
+    MsMsDataBrowserComponent,
   ],
   imports: [
     BrowserModule,

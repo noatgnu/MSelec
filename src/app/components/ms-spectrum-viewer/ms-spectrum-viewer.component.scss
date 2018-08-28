@@ -1,19 +1,30 @@
-/deep/ text.label-text {
-  font-family: Arial;
-  font-size: 8pt;
-}
-/deep/ circle.label-point {
-  stroke: black;
-  stroke-width: 0.5px;
-  fill: dodgerblue;
-}
-
-/deep/ line.guide-line {
-  stroke: black;
-  stroke-width: 0.5px;
-}
-
 /deep/ svg {
+  line {
+    .guide-line {
+      stroke: black;
+      stroke-width: 0.5px;
+    }
+
+    .b-ion {
+      stroke: red;
+    }
+
+    .y-ion {
+      stroke: blue;
+    }
+  }
+
+  text.label-text {
+    font-family: serif;
+    font-size: 8pt;
+  }
+
+  circle.label-point {
+    stroke: black;
+    stroke-width: 0.5px;
+    fill: dodgerblue;
+  }
+
   text {
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -31,4 +42,6 @@
     stroke-width: 0.5px;
   }
 }
+
+
 

@@ -2,6 +2,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {MsReformatComponent} from "./components/ms-reformat/ms-reformat.component";
+import {MsMsDataBrowserComponent} from "./components/ms-ms-data-browser/ms-ms-data-browser.component";
 
 const routes: Routes = [
     {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'msreformat',
     component: MsReformatComponent
+  },
+  {
+    path: 'msmsbrowser',
+    component: MsMsDataBrowserComponent
   }
 ];
 
