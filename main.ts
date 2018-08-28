@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as url from 'url';
 import * as child_process from 'child_process';
 
-
+let parserWS = null;
 let ws = null;
 let win, serve;
 const args = process.argv.slice(1);
@@ -92,7 +92,7 @@ function navMS() {
     height: size.height,
   });
   win.loadURL('file://'+__dirname+'/dist/index.html#' + arg);
-  win.setMenu(null);
+  win.webContents.openDevTools();
 }
 
 function closeWS() {
@@ -151,4 +151,17 @@ console.log('WebSocket Connection Service assigned.');
 ipcMain.on('ws-job', function (event, arg) {
   console.log(arg);
   ws.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
+});
+ipcMain.on('ws-parser', function (event, arg) {
+  parserWS.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
+});
+
+
+parserWS = new WebSocket('ws://127.0.0.1:8888/csv');
+parserWS.on('open', () => {
+  console.log('WebSocket Client Connected');
+  ws.send(JSON.stringify({ event: 'connected', msg: {name: 'connection', data: true} }));
+});
+parserWS.on('message', msg => {
+  console.log('Received: ', msg);
 });
