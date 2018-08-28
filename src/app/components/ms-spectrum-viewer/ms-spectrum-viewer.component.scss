@@ -1,0 +1,34 @@
+/deep/ text.label-text {
+  font-family: Arial;
+  font-size: 8pt;
+}
+/deep/ circle.label-point {
+  stroke: black;
+  stroke-width: 0.5px;
+  fill: dodgerblue;
+}
+
+/deep/ line.guide-line {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+
+/deep/ svg {
+  text {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  text::selection {
+    background: none;
+  }
+
+  .background rect {
+    fill: transparent;
+    stroke: black;
+    stroke-width: 0.5px;
+  }
+}
+

@@ -9,7 +9,7 @@ import {MsSpectrum} from '../../helper/ms-spectrum';
 @Component({
   selector: 'app-ms-spectrum-viewer',
   templateUrl: './ms-spectrum-viewer.component.html',
-  styleUrls: ['./ms-spectrum-viewer.component.css']
+  styleUrls: ['./ms-spectrum-viewer.component.scss']
 })
 export class MsSpectrumViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() data: MsSpectrum;
@@ -58,10 +58,10 @@ export class MsSpectrumViewerComponent implements OnInit, AfterViewInit, OnDestr
 
       const graphBlock = svg.append('g').attr('class', 'graphBlock').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
       const backgroundBlock = graphBlock.append('g').attr('class', 'background');
-      const background = backgroundBlock.append('rect').attr('width', width).attr('height', height)
-        .style('fill', 'transparent')
-        .style('stroke', 'black')
-        .style('stroke-width', 0.5);
+      const background = backgroundBlock.append('rect').attr('width', width).attr('height', height);
+        // .style('fill', 'transparent')
+        // .style('stroke', 'black')
+        // .style('stroke-width', 0.5);
 
       const previewBlock = graphBlock.append('g').attr('class', 'preview-block');
       previewLineHorizontal = previewBlock.append('line').attr('id', 'preview-horizontal')
