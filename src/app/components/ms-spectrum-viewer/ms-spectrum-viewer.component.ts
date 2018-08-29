@@ -46,7 +46,7 @@ export class MsSpectrumViewerComponent implements OnInit, AfterViewInit, OnDestr
     console.log(bound);
     if (this.parentNativeEnviroment != null) {
       svg = d3Local.select(this.parentNativeEnviroment).append('svg')
-        /*.attr('width', frame.width).attr('height', frame.height);*/
+        //.attr('width', frame.width).attr('height', frame.height);
         .attr('viewBox', '0 0 ' + frame.width + ' ' + frame.height);
       const x = spectrumService.GetXAxis(d3Local, width, bound.x.xMax + bound.x.xMax / 10);
       const xAxis = d3Local.axisBottom(x);
@@ -81,7 +81,9 @@ export class MsSpectrumViewerComponent implements OnInit, AfterViewInit, OnDestr
 
       const peaks = graphBlock.selectAll('.peaks').data(this.data.Values);
       const peakBlocks = peaks.enter().append('g').attr('class', 'peak-block');
-      const peak = peakBlocks.append('line')
+      const peak = peakBlocks.append('line').attr('class', function (d) {
+        return 'peak ' + d.IonType + '-ion';
+      })
         .attr('x1', function (d) {
         return x(d[mode]);
       }).attr('x2', function (d) {
@@ -90,8 +92,8 @@ export class MsSpectrumViewerComponent implements OnInit, AfterViewInit, OnDestr
         console.log(y(0));
         return y(0);
         })
-        .attr('y2', y(0))
-        .style('stroke-width', 2).style('stroke', 'black').attr('class', 'peak');
+        .attr('y2', y(0));
+      console.log(peak);
       const drag = this.drag(d3Local);
 
       const brush = this.brushed(d3Local, x, y, bound.x.xMax + bound.x.xMax / 10, bound.y.yMax + bound.y.yMax / 10, graphBlock, xAxis, yAxis, mode, [[0, 0], [width, height]]);

@@ -1,28 +1,49 @@
-<div fxLayout="row" fxFlexFill fxLayoutGap="5px" fxLayoutAlign="start center" >
-  <div fxFlex="15">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          Recent Jobs
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <app-recent-jobs></app-recent-jobs>
-      </mat-card-content>
-    </mat-card>
+<div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="5px">
+  <div fxLayout="row" fxFlexFill fxLayoutGap="5px" fxLayoutAlign="start stretch" class="msms-browser-container">
+    <div fxFlex="15">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            Protein
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="protein-list-container">
+            <mat-nav-list>
+              <mat-list-item *ngFor="let p of Proteins" (click)="chooseProtein(p)">
+                <a>
+                  {{p.Name}}
+                </a>
+              </mat-list-item>
+            </mat-nav-list>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxFlex="15">
+      <app-peptide-browser></app-peptide-browser>
+    </div>
+    <div fxFlex="70">
+      <app-ion-browser></app-ion-browser>
+    </div>
   </div>
-  <div fxFlex="75">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          Content
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div *ngIf="MsData|async;let MsData">
-          <app-ms-spectrum-viewer [data]="MsData" [mode]="'MZ'"></app-ms-spectrum-viewer>
-        </div>
-      </mat-card-content>
-    </mat-card>
+  <div fxLayout="row" fxFill>
+    <div fxFlex="100">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            MS/MS Spectra Viewer
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngIf="MsData|async;let MsData">
+            <app-ms-spectrum-viewer [data]="MsData" [mode]="'MZ'"></app-ms-spectrum-viewer>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
   </div>
+
 </div>
+

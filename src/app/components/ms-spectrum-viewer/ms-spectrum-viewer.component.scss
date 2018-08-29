@@ -1,19 +1,4 @@
 /deep/ svg {
-  line {
-    .guide-line {
-      stroke: black;
-      stroke-width: 0.5px;
-    }
-
-    .b-ion {
-      stroke: red;
-    }
-
-    .y-ion {
-      stroke: blue;
-    }
-  }
-
   text.label-text {
     font-family: serif;
     font-size: 8pt;
@@ -43,5 +28,16 @@
   }
 }
 
+/deep/ line.guide-line {
+  stroke: black;
+  stroke-width: 1px;
+}
 
-
+/deep/ line.b-ion {
+  stroke-width: 2;
+  stroke: red;
+};
+/deep/ line.y-ion {
+  stroke-width: 2;
+  stroke: blue;
+}

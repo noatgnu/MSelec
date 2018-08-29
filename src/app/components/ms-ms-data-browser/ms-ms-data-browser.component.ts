@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {MsDataService} from "../../helper/ms-data.service";
-import {Observable} from "rxjs";
-import {MsSpectrum} from "../../helper/ms-spectrum";
-import {ElectronService} from "../../providers/electron.service";
-import {FileService} from "../../providers/file.service";
+import {MsDataService} from '../../helper/ms-data.service';
+import {Observable} from 'rxjs';
+import {MsSpectrum} from '../../helper/ms-spectrum';
+import {ElectronService} from '../../providers/electron.service';
+import {FileService} from '../../providers/file.service';
 
-import {WebSocketService} from "../../providers/web-socket.service";
+import {WebSocketService} from '../../providers/web-socket.service';
+import {MsElement} from '../../helper/ms-element';
+import {MsProtein} from '../../helper/ms-protein';
+import {MsPeptide} from '../../helper/ms-peptide';
 
 @Component({
   selector: 'app-ms-ms-data-browser',
@@ -16,14 +19,36 @@ export class MsMsDataBrowserComponent implements OnInit {
   MsData: Observable<MsSpectrum>;
   private remote;
   private currentWindow;
+  private ipcRenderer;
+  ionMap: Map<string, MsProtein> = new Map<string, MsProtein>();
+  Proteins: MsProtein[] = [];
+
   constructor(private spectrum: MsDataService, private electron: ElectronService, private fileService: FileService, private webSocket: WebSocketService) {
     this.MsData = this.spectrum.viewerDataReader;
     this.remote = this.electron.remote;
+    this.ipcRenderer = this.electron.ipcRenderer;
     this.currentWindow = this.remote.getCurrentWindow();
     this.createMenu();
   }
 
   ngOnInit() {
+    this.ionMap = new Map<string, MsProtein>();
+    const a = this.ionMap;
+    this.Proteins = [];
+    const p = this.Proteins;
+    this.ipcRenderer.on('msmsfile', function (event, arg) {
+      const e = <MsElement>arg;
+      console.log(e);
+      if (!a.has(e.Protein)) {
+        const c = new MsProtein( new Map<string, MsPeptide>(), e.Protein);
+        a.set(e.Protein, c);
+        p.push(c);
+      }
+      if (!a.get(e.Protein).Peptides.has(e.Peptide)) {
+        a.get(e.Protein).Peptides.set(e.Peptide, new MsPeptide(e.Peptide, []));
+      }
+      a.get(e.Protein).Peptides.get(e.Peptide).Ions.push(e);
+    });
   }
 
   createMenu() {
@@ -35,9 +60,9 @@ export class MsMsDataBrowserComponent implements OnInit {
         label: 'File',
         submenu: [
           {
-            label: 'Load File',
+            label: 'Load SWATH Ion File',
             click() {
-              pif("swath", a, w)
+              pif('swath', a, w);
             }
           }
         ]
@@ -50,7 +75,11 @@ export class MsMsDataBrowserComponent implements OnInit {
   pickIonFile(fileType: string, a, w) {
     const picked = a.pickFile();
     if (picked !== undefined) {
-      w.sendToMain({job: 'msmsfile', data: {filePath: picked[0], fileType: fileType}});
+      w.sendForParser({job: 'msmsfile', data: {filePath: picked[0], fileType: fileType}});
     }
+  }
+
+  chooseProtein(protein: MsProtein) {
+    this.spectrum.UpdatePeptidesData(Array.from(protein.Peptides.values()));
   }
 }

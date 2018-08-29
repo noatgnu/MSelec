@@ -1,0 +1,82 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Content
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="table-container">
+      <table mat-table [dataSource]="Ions">
+        <ng-container matColumnDef="Intensity">
+          <th mat-header-cell *matHeaderCellDef>
+            Intensity
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.Intensity}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="MZ">
+          <th mat-header-cell *matHeaderCellDef>
+            Intensity
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.MZ}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="PrecursorMZ">
+          <th mat-header-cell *matHeaderCellDef>
+            Precursor MZ
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.PrecursorMZ}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="PrecursorCharge">
+          <th mat-header-cell *matHeaderCellDef>
+            Precursor MZ
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.PrecursorCharge}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="RT">
+          <th mat-header-cell *matHeaderCellDef>
+            RT
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.RT}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="FragmentCharge">
+          <th mat-header-cell *matHeaderCellDef>
+            Fragment Charge
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.FragmentCharge}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="IonType">
+          <th mat-header-cell *matHeaderCellDef>
+            Ion Type
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.IonType}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Residue">
+          <th mat-header-cell *matHeaderCellDef>
+            Residue
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.Residue}}
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+

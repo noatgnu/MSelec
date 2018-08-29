@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Peptides
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="peptide-list-container">
+      <mat-nav-list *ngIf="Peptide|async; let Peptides">
+        <mat-list-item *ngFor="let p of Peptides" (click)="choosePeptide(p)">
+          <a>
+            {{p.Sequence}}
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+  </mat-card-content>
+</mat-card>

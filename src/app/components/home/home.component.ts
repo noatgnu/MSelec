@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
         frame: true,
         transparent: false,
       });
-      win.webContents.openDevTools();
+      // win.webContents.openDevTools();
       win.loadURL(`file://${__dirname}/index.html#/${arg}`);
       win.setMenu(null);
     });

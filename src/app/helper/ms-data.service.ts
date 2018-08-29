@@ -1,20 +1,32 @@
 import { Injectable } from '@angular/core';
 import {MsSpectrum} from './ms-spectrum';
 import {MsElement} from './ms-element';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {D3} from 'd3-ng2-service';
+import {MsPeptide} from './ms-peptide';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MsDataService {
-  //testData = new MsSpectrum('test', [new MsElement(100, 10, 6, 0), new MsElement(50, 100, 6, 1)]);
   private viewerData = new BehaviorSubject<MsSpectrum>(null);
   viewerDataReader = this.viewerData.asObservable();
+  private peptidesData = new Subject<MsPeptide[]>();
+  peptidesDataReader = this.peptidesData.asObservable();
+  private ionsData = new Subject<MsElement[]>();
+  ionsDataReader = this.ionsData.asObservable();
   constructor() { }
 
   UpdateViewerData(data: MsSpectrum) {
     this.viewerData.next(data);
+  }
+
+  UpdatePeptidesData (data) {
+    this.peptidesData.next(data);
+  }
+
+  UpdateIonData(data) {
+    this.ionsData.next(data);
   }
 
   GetYAxis(d3: D3, maxHeight: number, maxValue: number) {

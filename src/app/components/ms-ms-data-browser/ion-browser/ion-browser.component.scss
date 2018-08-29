@@ -1,6 +1,12 @@
-.protein-list-container {
+.table-container {
   position: relative;
-  height: 300px;
   max-height: 300px;
   overflow: auto;
+
+  table {
+    width: 100%
+  }
+
+
 }
+

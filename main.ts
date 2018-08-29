@@ -9,8 +9,8 @@ let ws = null;
 let win, serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
-
-const be = child_process.spawn(path.resolve(__dirname, 'cmd', '"msWeave.exe"'), [], {shell: true});
+const windowMap = new Map<string, BrowserWindow>();
+const be = child_process.spawn(path.resolve(__dirname, 'cmd', '"msWeave.exe"'), [], {shell: true, detached: true});
 
 function createWindow() {
 
@@ -53,7 +53,7 @@ function createWindow() {
 
 }
 
-function createMenu(win) {
+function createMenu(w) {
   const template = [
     {
       label: 'Tool',
@@ -74,7 +74,7 @@ function createMenu(win) {
       ]
     }
   ];
-  win.setMenu(Menu.buildFromTemplate(template));
+  w.setMenu(Menu.buildFromTemplate(template));
 }
 
 function navWin(route) {
@@ -85,14 +85,16 @@ function navMS() {
   const arg = 'msmsbrowser';
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
-  const win = new BrowserWindow({
+  const w = new BrowserWindow({
     x: 0,
     y: 0,
     width: size.width,
     height: size.height,
+    title: 'msmsfile'
   });
-  win.loadURL('file://'+__dirname+'/dist/index.html#' + arg);
-  win.webContents.openDevTools();
+  w.loadURL('file://' + __dirname + '/dist/index.html#' + arg);
+  w.webContents.openDevTools();
+  windowMap.set('msmsfile', w);
 }
 
 function closeWS() {
@@ -152,7 +154,9 @@ ipcMain.on('ws-job', function (event, arg) {
   console.log(arg);
   ws.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
 });
+
 ipcMain.on('ws-parser', function (event, arg) {
+  console.log(arg);
   parserWS.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
 });
 
@@ -163,5 +167,18 @@ parserWS.on('open', () => {
   ws.send(JSON.stringify({ event: 'connected', msg: {name: 'connection', data: true} }));
 });
 parserWS.on('message', msg => {
-  console.log('Received: ', msg);
+  const m = JSON.parse(msg);
+  console.log(m);
+
+  windowMap.get(m['msg']['name']).webContents.send(m['msg']['name'], m['msg']['data']);
 });
+
+function getWindow(name: string) {
+  const windowArray = BrowserWindow.getAllWindows();
+  for (let i = 0; i < windowArray.length; i++) {
+    if (windowArray[i].getTitle() === 'msmsfile') {
+      return windowArray[i];
+    }
+  }
+  return null;
+}

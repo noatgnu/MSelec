@@ -25,12 +25,22 @@ import {WebSocketService} from './providers/web-socket.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatCheckboxModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatCardModule} from '@angular/material';
+import {
+  MatCheckboxModule,
+  MatButtonModule,
+  MatInputModule,
+  MatFormFieldModule,
+  MatCardModule,
+  MatListModule,
+  MatTableModule
+} from '@angular/material';
 import {FileService} from './providers/file.service';
 import { RecentJobsComponent } from './components/recent-jobs/recent-jobs.component';
 import {D3Service} from 'd3-ng2-service';
 import {MsSpectrumViewerComponent} from './components/ms-spectrum-viewer/ms-spectrum-viewer.component';
 import { MsMsDataBrowserComponent } from './components/ms-ms-data-browser/ms-ms-data-browser.component';
+import { PeptideBrowserComponent } from './components/ms-ms-data-browser/peptide-browser/peptide-browser.component';
+import { IonBrowserComponent } from './components/ms-ms-data-browser/ion-browser/ion-browser.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -46,6 +56,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     RecentJobsComponent,
     MsSpectrumViewerComponent,
     MsMsDataBrowserComponent,
+    PeptideBrowserComponent,
+    IonBrowserComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +71,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCheckboxModule,
     FlexLayoutModule,
     MatCardModule,
+    MatListModule,
+    MatTableModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {
