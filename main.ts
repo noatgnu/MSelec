@@ -21,8 +21,8 @@ function createWindow() {
   win = new BrowserWindow({
     x: 0,
     y: 0,
-    width: size.width,
-    height: size.height
+    width: 640,
+    height: 480
   });
 
   if (serve) {
@@ -51,6 +51,41 @@ function createWindow() {
 
   createMenu(win);
 
+  ws = new WebSocket('ws://127.0.0.1:8888/ui');
+  ws.on('open', () => {
+    console.log('WebSocket Client Connected');
+    ws.send(JSON.stringify({ event: 'connected', msg: {name: 'connection', data: true} }));
+  });
+
+  ws.on('close', () => {
+    console.log('WebSocket Connection Closed');
+    app.quit();
+  });
+
+  ws.on('message', msg => {
+    console.log('Received: ', msg);
+  });
+  console.log('WebSocket Connection Service assigned.');
+  ipcMain.on('ws-job', function (event, arg) {
+    console.log(arg);
+    ws.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
+  });
+
+  ipcMain.on('ws-parser', function (event, arg) {
+    console.log(arg);
+    parserWS.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
+  });
+
+
+  parserWS = new WebSocket('ws://127.0.0.1:8888/csv');
+  parserWS.on('open', () => {
+    console.log('WebSocket Client Connected');
+    ws.send(JSON.stringify({ event: 'connected', msg: {name: 'connection', data: true} }));
+  });
+  parserWS.on('message', msg => {
+    const m = JSON.parse(msg);
+    windowMap.get(m['msg']['name']).webContents.send(m['msg']['name'], m['msg']['data']);
+  });
 }
 
 function createMenu(w) {
@@ -135,43 +170,7 @@ try {
   // Catch Error
   // throw e;
 }
-ws = new WebSocket('ws://127.0.0.1:8888/ui');
-ws.on('open', () => {
-  console.log('WebSocket Client Connected');
-  ws.send(JSON.stringify({ event: 'connected', msg: {name: 'connection', data: true} }));
-});
 
-ws.on('close', () => {
-  console.log('WebSocket Connection Closed');
-  app.quit();
-});
-
-ws.on('message', msg => {
-  console.log('Received: ', msg);
-});
-console.log('WebSocket Connection Service assigned.');
-ipcMain.on('ws-job', function (event, arg) {
-  console.log(arg);
-  ws.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
-});
-
-ipcMain.on('ws-parser', function (event, arg) {
-  console.log(arg);
-  parserWS.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
-});
-
-
-parserWS = new WebSocket('ws://127.0.0.1:8888/csv');
-parserWS.on('open', () => {
-  console.log('WebSocket Client Connected');
-  ws.send(JSON.stringify({ event: 'connected', msg: {name: 'connection', data: true} }));
-});
-parserWS.on('message', msg => {
-  const m = JSON.parse(msg);
-  console.log(m);
-
-  windowMap.get(m['msg']['name']).webContents.send(m['msg']['name'], m['msg']['data']);
-});
 
 function getWindow(name: string) {
   const windowArray = BrowserWindow.getAllWindows();

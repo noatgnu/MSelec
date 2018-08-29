@@ -1,24 +1,20 @@
 <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="5px">
-  <div fxLayout="row" fxFlexFill fxLayoutGap="5px" fxLayoutAlign="start stretch" class="msms-browser-container">
+  <div fxLayout="row" fxFlexFill fxLayoutGap="5px" fxLayoutAlign="start stretch">
     <div fxFlex="15">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>
-            Protein
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="protein-list-container">
-            <mat-nav-list>
-              <mat-list-item *ngFor="let p of Proteins" (click)="chooseProtein(p)">
-                <a>
-                  {{p.Name}}
-                </a>
-              </mat-list-item>
-            </mat-nav-list>
-          </div>
-        </mat-card-content>
-      </mat-card>
+      <div fxLayout="column" fxFlexFill class="msms-browser-container" fxLayoutAlign="start stretch" fxLayoutGap="5px">
+        <div fxFlex="20">
+          <mat-form-field>
+            <mat-select placeholder="Sample">
+              <mat-option *ngFor="let s of Samples" (click)="chooseSample(s)">
+                {{s.Name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="80">
+          <app-protein-browser></app-protein-browser>
+        </div>
+      </div>
     </div>
     <div fxFlex="15">
       <app-peptide-browser></app-peptide-browser>
@@ -36,8 +32,8 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div *ngIf="MsData|async;let MsData">
-            <app-ms-spectrum-viewer [data]="MsData" [mode]="'MZ'"></app-ms-spectrum-viewer>
+          <div *ngIf="MsData|async;let MsData" class="ms-viewer">
+            <app-ms-spectrum-viewer [mode]="'MZ'"></app-ms-spectrum-viewer>
           </div>
         </mat-card-content>
       </mat-card>

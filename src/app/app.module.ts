@@ -32,7 +32,7 @@ import {
   MatFormFieldModule,
   MatCardModule,
   MatListModule,
-  MatTableModule
+  MatTableModule, MatSelectModule
 } from '@angular/material';
 import {FileService} from './providers/file.service';
 import { RecentJobsComponent } from './components/recent-jobs/recent-jobs.component';
@@ -41,6 +41,7 @@ import {MsSpectrumViewerComponent} from './components/ms-spectrum-viewer/ms-spec
 import { MsMsDataBrowserComponent } from './components/ms-ms-data-browser/ms-ms-data-browser.component';
 import { PeptideBrowserComponent } from './components/ms-ms-data-browser/peptide-browser/peptide-browser.component';
 import { IonBrowserComponent } from './components/ms-ms-data-browser/ion-browser/ion-browser.component';
+import { ProteinBrowserComponent } from './components/ms-ms-data-browser/protein-browser/protein-browser.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -58,6 +59,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MsMsDataBrowserComponent,
     PeptideBrowserComponent,
     IonBrowserComponent,
+    ProteinBrowserComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCardModule,
     MatListModule,
     MatTableModule,
+    MatSelectModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {

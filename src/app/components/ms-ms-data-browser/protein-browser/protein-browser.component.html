@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Protein
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="protein-list-container">
+      <mat-nav-list *ngIf="Proteins|async; let Proteins">
+        <mat-list-item *ngFor="let p of Proteins" (click)="chooseProtein(p)">
+          <a>
+            {{p.Name}}
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+  </mat-card-content>
+</mat-card>

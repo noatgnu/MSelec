@@ -1,6 +1,12 @@
-.protein-list-container {
+.msms-browser-container {
   position: relative;
   height: 300px;
   max-height: 300px;
+  overflow: auto;
+}
+.ms-viewer{
+  position: relative;
+  height: 500px;
+  max-height: 50%;
   overflow: auto;
 }
