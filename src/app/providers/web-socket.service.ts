@@ -18,4 +18,8 @@ export class WebSocketService {
   sendForParser(msg) {
     this.ipcRenderer.send('ws-parser', msg)
   }
+
+  sendForSavingSVG(msg) {
+    this.ipcRenderer.send('ws-svg', msg)
+  }
 }

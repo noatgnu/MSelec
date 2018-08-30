@@ -43,6 +43,7 @@ import { PeptideBrowserComponent } from './components/ms-ms-data-browser/peptide
 import { IonBrowserComponent } from './components/ms-ms-data-browser/ion-browser/ion-browser.component';
 import { ProteinBrowserComponent } from './components/ms-ms-data-browser/protein-browser/protein-browser.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { MsSpectrumGraphComponent } from './components/ms-spectrum-viewer/ms-spectrum-graph/ms-spectrum-graph.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -61,6 +62,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PeptideBrowserComponent,
     IonBrowserComponent,
     ProteinBrowserComponent,
+    MsSpectrumGraphComponent,
   ],
   imports: [
     BrowserModule,

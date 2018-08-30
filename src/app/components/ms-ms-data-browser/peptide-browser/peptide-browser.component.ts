@@ -20,6 +20,6 @@ export class PeptideBrowserComponent implements OnInit {
 
   choosePeptide(peptide: MsPeptide) {
     this.spectrum.UpdateIonData(peptide.Ions);
-    this.spectrum.UpdateViewerData(new MsSpectrum('', peptide.Ions));
+    this.spectrum.UpdateViewerData(new MsSpectrum('', peptide.Ions, {mode: 'MZ'}));
   }
 }

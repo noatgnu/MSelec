@@ -6,6 +6,7 @@ import * as child_process from 'child_process';
 
 let parserWS = null;
 let ws = null;
+let saveSVG = null;
 let win, serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
@@ -75,7 +76,10 @@ function createWindow() {
     console.log(arg);
     parserWS.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}));
   });
-
+  ipcMain.on('ws-svg', function (event, arg) {
+    console.log(arg);
+    saveSVG.send(JSON.stringify({event: 'job', msg: {name: arg.job, data: arg.data}}))
+  });
 
   parserWS = new WebSocket('ws://127.0.0.1:8888/csv');
   parserWS.on('open', () => {
@@ -86,6 +90,16 @@ function createWindow() {
     const m = JSON.parse(msg);
     windowMap.get(m['msg']['name']).webContents.send(m['msg']['name'], m['msg']['data']);
   });
+
+  saveSVG = new WebSocket('ws://127.0.0.1:8888/svg');
+  saveSVG.on('open', () => {
+    console.log('WebSocket Client Connected');
+    ws.send(JSON.stringify({ event: 'connected', msg: {name: 'connection', data: true} }));
+  });
+  saveSVG.on('message', msg => {
+
+  })
+
 }
 
 function createMenu(w) {

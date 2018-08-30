@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MsDataService} from '../../helper/ms-data.service';
 import {Observable} from 'rxjs';
 import {MsSpectrum} from '../../helper/ms-spectrum';
@@ -17,6 +17,7 @@ import {MsSample} from '../../helper/ms-sample';
   styleUrls: ['./ms-ms-data-browser.component.scss']
 })
 export class MsMsDataBrowserComponent implements OnInit {
+
   MsData: Observable<MsSpectrum>;
   private remote;
   private currentWindow;
@@ -97,5 +98,9 @@ export class MsMsDataBrowserComponent implements OnInit {
 
   chooseSample(sample: MsSample) {
     this.spectrum.UpdateProteinData(Array.from(sample.Proteins.values()));
+  }
+
+  exportSVG() {
+
   }
 }

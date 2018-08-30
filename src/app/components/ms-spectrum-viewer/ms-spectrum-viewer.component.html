@@ -1,1 +1,11 @@
-<button (click)="enableZoom()">Zoom</button>
+<div class="row">
+  <div class="col">
+    <button class="btn btn-primary" (click)="enableZoom()">Zoom</button>
+    <button class="btn btn-primary" (click)="exportSVG()">Export</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <app-ms-spectrum-graph (svgOut)="getSVG($event)"></app-ms-spectrum-graph>
+  </div>
+</div>

@@ -18,6 +18,8 @@ export class MsDataService {
   ionsDataReader = this.ionsData.asObservable();
   private sampleData = new BehaviorSubject<MsProtein[]>(null);
   sampleDataReader = this.sampleData.asObservable();
+  private saveTrigger = new Subject<boolean>();
+  saveTriggerReader = this.saveTrigger.asObservable();
   constructor() { }
 
   UpdateViewerData(data: MsSpectrum) {
@@ -34,6 +36,10 @@ export class MsDataService {
 
   UpdateProteinData(data) {
     this.sampleData.next(data);
+  }
+
+  UpdateSaveTrigger(data) {
+    this.saveTrigger.next(data);
   }
 
   GetYAxis(d3: D3, maxHeight: number, maxValue: number) {
