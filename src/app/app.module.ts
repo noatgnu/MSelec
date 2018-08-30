@@ -42,6 +42,7 @@ import { MsMsDataBrowserComponent } from './components/ms-ms-data-browser/ms-ms-
 import { PeptideBrowserComponent } from './components/ms-ms-data-browser/peptide-browser/peptide-browser.component';
 import { IonBrowserComponent } from './components/ms-ms-data-browser/ion-browser/ion-browser.component';
 import { ProteinBrowserComponent } from './components/ms-ms-data-browser/protein-browser/protein-browser.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -67,15 +68,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    FlexLayoutModule,
-    MatCardModule,
-    MatListModule,
-    MatTableModule,
-    MatSelectModule,
+    NgbModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {

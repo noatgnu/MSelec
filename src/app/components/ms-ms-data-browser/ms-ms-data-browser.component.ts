@@ -9,7 +9,7 @@ import {WebSocketService} from '../../providers/web-socket.service';
 import {MsElement} from '../../helper/ms-element';
 import {MsProtein} from '../../helper/ms-protein';
 import {MsPeptide} from '../../helper/ms-peptide';
-import {MsSample} from "../../helper/ms-sample";
+import {MsSample} from '../../helper/ms-sample';
 
 @Component({
   selector: 'app-ms-ms-data-browser',
@@ -40,7 +40,7 @@ export class MsMsDataBrowserComponent implements OnInit {
       const e = <MsElement[]>arg;
       for (let i = 0; i < e.length; i++) {
         if (!a.has(e[i].Sample)) {
-          const c = new MsSample(e[i].Sample, new Map<string, MsProtein>())
+          const c = new MsSample(e[i].Sample, new Map<string, MsProtein>());
           a.set(e[i].Sample, c);
           p.push(c);
         }
@@ -68,6 +68,17 @@ export class MsMsDataBrowserComponent implements OnInit {
             label: 'Load SWATH Ion File',
             click() {
               pif('swath', a, w);
+            }
+          }
+        ],
+      },
+      {
+        label: 'Export',
+        submenu: [
+          {
+            label: 'Batch Export',
+            click() {
+
             }
           }
         ]

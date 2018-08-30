@@ -1,24 +1,39 @@
 <div class="container-fluid">
   <form [formGroup]="form">
-    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
-      <button mat-stroked-button="" color="primary" (click)="pickOpenFile('ion')" id="ion-input">Choose Ion File</button>
-      <div class="filename">{{labels.ion}}</div>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary" (click)="pickOpenFile('ion')" id="ion-input">Choose Ion File</button>
+      </div>
+      <div class="col">
+        <div class="filename">{{labels.ion}}</div>
+      </div>
     </div>
-    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
-      <button mat-stroked-button="" button color="primary" (click)="pickOpenFile('fdr')" id="fdr-input">Choose FDR File</button>
-      <div class="filename">{{labels.fdr}}</div>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary" (click)="pickOpenFile('fdr')" id="fdr-input">Choose FDR File</button>
+      </div>
+      <div class="col">
+        <div class="filename">{{labels.fdr}}</div>
+      </div>
     </div>
-    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
-      <button mat-stroked-button="" button color="primary" (click)="pickSaveFile('output')" id="output-input">Choose Output</button>
-      <div class="filename">{{labels.output}}</div>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary" (click)="pickSaveFile('output')" id="output-input">Choose Output</button>
+      </div>
+      <div class="col">
+        <div class="filename">{{labels.output}}</div>
+      </div>
     </div>
-    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
-      <mat-form-field>
-        <input matInput placeholder="P-Value Cutoff" type="text" formControlName="p">
-      </mat-form-field>
+    <div class="row form-group">
+      <label for="p-value" class="col col-form-label"></label> P-Value Cutoff
+      <div class="col">
+        <input class="form-control" placeholder="P-Value Cutoff" type="text" formControlName="p" id="p-value">
+      </div>
     </div>
-    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
-      <button mat-raised-button color="primary" (click)="clicked()">Submit</button>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary" (click)="clicked()">Submit</button>
+      </div>
     </div>
   </form>
 </div>

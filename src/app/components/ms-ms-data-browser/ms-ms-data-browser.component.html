@@ -1,45 +1,35 @@
-<div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="5px">
-  <div fxLayout="row" fxFlexFill fxLayoutGap="5px" fxLayoutAlign="start stretch">
-    <div fxFlex="15">
-      <div fxLayout="column" fxFlexFill class="msms-browser-container" fxLayoutAlign="start stretch" fxLayoutGap="5px">
-        <div fxFlex="20">
-          <mat-form-field>
-            <mat-select placeholder="Sample">
-              <mat-option *ngFor="let s of Samples" (click)="chooseSample(s)">
-                {{s.Name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+<div class="container-fluid">
+  <div class="row input-frame">
+    <div class="col-2">
+      <div class="row">
+        <div class="col form-group">
+          <label for="Samples">
+            Select A Sample:
+          </label>
+          <select class="form-control" id="Samples" [size]="5">
+            <option *ngFor="let s of Samples" (click)="chooseSample(s)">
+              {{s.Name}}
+            </option>
+          </select>
         </div>
-        <div fxFlex="80">
+      </div>
+      <div class="row">
+        <div class="col">
           <app-protein-browser></app-protein-browser>
         </div>
       </div>
     </div>
-    <div fxFlex="15">
+    <div class="col-2">
       <app-peptide-browser></app-peptide-browser>
     </div>
-    <div fxFlex="70">
+    <div class="col-8">
       <app-ion-browser></app-ion-browser>
     </div>
   </div>
-  <div fxLayout="row" fxFill>
-    <div fxFlex="100">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>
-            MS/MS Spectra Viewer
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div *ngIf="MsData|async;let MsData" class="ms-viewer">
-            <app-ms-spectrum-viewer [mode]="'MZ'"></app-ms-spectrum-viewer>
-          </div>
-        </mat-card-content>
-      </mat-card>
+  <div class="row">
+    <div *ngIf="MsData|async;let MsData" class="col-12">
+      <app-ms-spectrum-viewer [mode]="'MZ'"></app-ms-spectrum-viewer>
     </div>
-
   </div>
-
 </div>
 

@@ -40,7 +40,7 @@ export class MsReformatComponent implements OnInit {
   clicked(){
     this.webSocket.sendToMain({job: 'msreformat', data: this.form.value});
     const current = this.remote.getCurrentWindow();
-    current.close();
+    // current.close();
   }
 
   pickOpenFile(key){

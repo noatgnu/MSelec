@@ -1,8 +1,7 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, ElementRef, Input} from '@angular/core';
 import { D3Service, D3, Selection } from 'd3-ng2-service';
 import {MsDataService} from '../../helper/ms-data.service';
-import {MsSpectrum} from '../../helper/ms-spectrum';
-import {Subscription} from "rxjs";
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-ms-spectrum-viewer',
@@ -33,11 +32,11 @@ export class MsSpectrumViewerComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnInit() {
-    this.data = this.spectrum.viewerDataReader.subscribe((data)=>{
+    this.data = this.spectrum.viewerDataReader.subscribe((data) => {
       const mode = this.mode;
       const d3Local = this.d3Obj;
       const frame = {width: 1820, height: 450};
-      const margin = {top: 20, right: 20, bottom: 30, left: 40};
+      const margin = {top: 20, right: 20, bottom: 60, left: 80};
       const width = frame.width - margin.left - margin.right;
       const height = frame.height - margin.top - margin.bottom;
       const bound = this.GetXYBound(this.mode, data);
@@ -57,7 +56,7 @@ export class MsSpectrumViewerComponent implements OnInit, AfterViewInit, OnDestr
           svg.select('*').remove();
         }
 
-        //.attr('width', frame.width).attr('height', frame.height);
+        // .attr('width', frame.width).attr('height', frame.height);
 
         const x = spectrumService.GetXAxis(d3Local, width, bound.x.xMax + bound.x.xMax / 10);
         const xAxis = d3Local.axisBottom(x);
@@ -153,7 +152,11 @@ export class MsSpectrumViewerComponent implements OnInit, AfterViewInit, OnDestr
         const xAxisBlock = graphBlock.append('g').attr('class', 'bottom-axis')
           .attr('transform', 'translate(0,' + height + ')').call(xAxis);
         const yAxisBlock = graphBlock.append('g').attr('class', 'left-axis').call(yAxis);
-
+        const yAxisTitle = graphBlock.append('g').attr('class', 'left-axis-title')
+          .append('text').attr('transform', 'rotate(-90)').attr('y', 0 - margin.left)
+          .attr('x', 0 - (height / 2)).attr('dy', '1em').style('text-anchor', 'middle').text('Intensity');
+        const xAxisTitle = graphBlock.append('g').attr('class', 'bottom-axis-title')
+          .append('text').attr('transform', 'translate(' + (width / 2) + ' ,' + (height + margin.top) + ')').style('text-anchor', 'middle').text(mode);
         // peakBlocks.exit().remove();
         // const a = graphBlock.append('g').attr('class', 'brush').call(brush);
         // console.log(a);
