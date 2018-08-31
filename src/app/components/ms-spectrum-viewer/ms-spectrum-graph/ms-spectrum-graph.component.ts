@@ -1,14 +1,14 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Subscription} from "rxjs";
-import {D3, D3Service} from "d3-ng2-service";
-import {MsDataService} from "../../../helper/ms-data.service";
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {D3, D3Service} from 'd3-ng2-service';
+import {MsDataService} from '../../../helper/ms-data.service';
 
 @Component({
   selector: 'app-ms-spectrum-graph',
   templateUrl: './ms-spectrum-graph.component.html',
   styleUrls: ['./ms-spectrum-graph.component.scss']
 })
-export class MsSpectrumGraphComponent implements OnInit {
+export class MsSpectrumGraphComponent implements OnInit, OnDestroy {
   @Output() svgOut = new EventEmitter();
   data: Subscription;
   saveTrigger: Subscription;
@@ -43,7 +43,7 @@ export class MsSpectrumGraphComponent implements OnInit {
       console.log(data);
       let mode;
       if (data.Options !== null) {
-        mode = data.Options['mode']
+        mode = data.Options['mode'];
       } else {
         mode = 'MZ';
       }
@@ -71,9 +71,9 @@ export class MsSpectrumGraphComponent implements OnInit {
 
         // .attr('width', frame.width).attr('height', frame.height);
 
-        const x = spectrumService.GetXAxis(d3Local, width, bound.x.xMax + bound.x.xMax / 10);
+        const x = spectrumService.GetXAxis(d3Local, width, bound.x.xMax + bound.x.xMax / 6);
         const xAxis = d3Local.axisBottom(x);
-        const y = spectrumService.GetYAxis(d3Local, height, bound.y.yMax + bound.y.yMax / 10);
+        const y = spectrumService.GetYAxis(d3Local, height, bound.y.yMax + bound.y.yMax / 3);
         const yAxis = d3Local.axisLeft(y);
 
         const graphBlock = svg.append('g').attr('class', 'graphBlock').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -131,11 +131,15 @@ export class MsSpectrumGraphComponent implements OnInit {
         }).attr('y0', function (d) {
           return y(d.Intensity) - 7;
         }).call(drag);
-        const peakLabelText = peakLabelBlock.append('text').attr('class', 'label-text')
-          .style('stroke', 'black').attr('x', function (d) {
+        const peakLabelText = peakLabelBlock.append('text').attr('class', 'label-text').attr('dy', '1em')
+          .attr('transform', function (d) {
+            return 'translate(' + x(d[mode]) + ',' + (y(0) - 12) + ') rotate(-90)';
+          })
+          /*.attr('x', function (d) {
             return x(d[mode]);
-          }).attr('y', y(0) - 12).text(function (d) {
-            return d.MZ;
+          }).attr('y', y(0) - 12)*/
+          .text(function (d) {
+            return Math.round(d.MZ * 10000) / 10000;
           });
 
         peak.transition().duration(1000).attr('y2', function (d) {
@@ -144,9 +148,13 @@ export class MsSpectrumGraphComponent implements OnInit {
         peakLabelPoint.transition().duration(1000).attr('cy', function (d) {
           return y(d.Intensity) - 7;
         });
-        peakLabelText.transition().duration(1000).attr('y', function (d) {
+        peakLabelText.transition().duration(1000)
+          .attr('transform', function (d) {
+            return 'translate(' + x(d[mode]) + ',' + (y(d.Intensity) - 12) + ') rotate(-90)';
+          })
+          /*.attr('y', function (d) {
           return y(d.Intensity) - 12;
-        });
+        })*/;
 
 
         background.on('mouseout', function () {
@@ -169,7 +177,7 @@ export class MsSpectrumGraphComponent implements OnInit {
           .append('text').attr('transform', 'rotate(-90)').attr('y', 0 - margin.left)
           .attr('x', 0 - (height / 2)).attr('dy', '1em').style('text-anchor', 'middle').text('Intensity');
         const xAxisTitle = graphBlock.append('g').attr('class', 'bottom-axis-title')
-          .append('text').attr('transform', 'translate(' + (width / 2) + ' ,' + (height + margin.top) + ')').style('text-anchor', 'middle').text(mode);
+          .append('text').attr('transform', 'translate(' + (width / 2) + ' ,' + (height + margin.top * 2) + ')').style('text-anchor', 'middle').text(mode);
         // peakBlocks.exit().remove();
         // const a = graphBlock.append('g').attr('class', 'brush').call(brush);
         // console.log(a);
@@ -237,7 +245,11 @@ export class MsSpectrumGraphComponent implements OnInit {
       .on('drag', function (d, i, n) {
         const circle = d3Local.select(n[i]).attr('cx', d3Local.event.x).attr('cy', d3Local.event.y);
         const parent = d3Local.select(<HTMLElement>circle.node().parentNode);
-        const text = parent.select('text').attr('x', d3Local.event.x).attr('y', d3Local.event.y - 5);
+        const text = parent.select('text')
+          .attr('transform', function () {
+            return 'translate(' + d3Local.event.x + ',' + (d3Local.event.y - 5) + ') rotate(-90)';
+          });
+          // .attr('x', d3Local.event.x).attr('y', d3Local.event.y - 5);
         const guide = parent.select('.guide-line').attr('x2', d3Local.event.x - 6).attr('y2', d3Local.event.y + 3);
         // const text = d3Local.select(d3Local.event.currentTarget).select('text').attr('x', d3Local.event.x).attr('y', d3Local.event.y - 5);
       }).on('end', function (d, i, n) {
@@ -257,12 +269,9 @@ export class MsSpectrumGraphComponent implements OnInit {
       });
   }
 
-  ngAfterViewInit() {
-
-  }
-
   ngOnDestroy() {
     this.data.unsubscribe();
+    this.saveTrigger.unsubscribe();
   }
 
   GetXYBound(mode: string, data) {
@@ -315,10 +324,115 @@ export class MsSpectrumGraphComponent implements OnInit {
   exportSvg() {
     if (this.svg !== undefined) {
       const a = new XMLSerializer();
-      const svgDocType = document.implementation.createDocumentType('svg',  "-//W3C//DTD SVG 1.1//EN", "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd");
-      const svgDoc= document.implementation.createDocument ('http://www.w3.org/2000/svg', 'svg', svgDocType);
-      svgDoc.replaceChild(this.svg.node().parentNode.cloneNode(true), svgDoc.documentElement);
+      const svgDocType = document.implementation.createDocumentType('svg',  '-//W3C//DTD SVG 1.1//EN', 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd');
+      const svgDoc = document.implementation.createDocument ('http://www.w3.org/2000/svg', 'svg', svgDocType);
+      const newDoc = this.svg.node().cloneNode(true);
+      this.read_Element(newDoc, this.svg.node());
+      svgDoc.replaceChild(newDoc, svgDoc.documentElement);
+
       this.svgOut.emit(a.serializeToString(svgDoc));
+    }
+  }
+
+  read_Element(ParentNode, OrigData) {
+    const Children = ParentNode.childNodes;
+    const OrigChildDat = OrigData.childNodes;
+    const ContainerElements = ['svg', 'g'];
+    const RelevantStyles = {'rect': ['fill', 'stroke', 'stroke-width'], 'path': ['fill', 'stroke', 'stroke-width'], 'circle': ['fill', 'stroke', 'stroke-width'], 'line': ['stroke', 'stroke-width'], 'text': ['fill', 'font-size', 'text-anchor', 'font-family'], 'polygon': ['stroke', 'fill']};
+
+    for (let cd = 0; cd < Children.length; cd++) {
+      const Child = Children[cd];
+
+      const TagName = Child.tagName;
+      if (ContainerElements.indexOf(TagName) !== -1) {
+        this.read_Element(Child, OrigChildDat[cd]);
+      } else {
+        const StyleDef = window.getComputedStyle(OrigChildDat[cd], null);
+        console.log(StyleDef.getPropertyValue('fill'));
+        let StyleString = '';
+        for (let st = 0; st < RelevantStyles[TagName].length; st++) {
+          StyleString += RelevantStyles[TagName][st] + ':' + StyleDef[RelevantStyles[TagName][st]] + '; ';
+        }
+
+        Child.setAttribute('style', StyleString);
+      }
+    }
+  }
+
+  getSVGString( svgNode ) {
+    svgNode.setAttribute('xlink', 'http://www.w3.org/1999/xlink');
+    const cssStyleText = getCSSStyles( svgNode );
+    appendCSS( cssStyleText, svgNode );
+
+    const serializer = new XMLSerializer();
+    let svgString = serializer.serializeToString(svgNode);
+    svgString = svgString.replace(/(\w+)?:?xlink=/g, 'xmlns:xlink='); // Fix root xlink without namespace
+    svgString = svgString.replace(/NS\d+:href/g, 'xlink:href'); // Safari NS namespace fix
+
+    return svgString;
+
+    function getCSSStyles( parentElement ) {
+      const selectorTextArr = [];
+
+      // Add Parent element Id and Classes to the list
+      selectorTextArr.push( '#' + parentElement.id );
+      for (let c = 0; c < parentElement.classList.length; c++) {
+        if ( !contains('.' + parentElement.classList[c], selectorTextArr) ) {
+          selectorTextArr.push( '.' + parentElement.classList[c] );
+        }
+      }
+
+      // Add Children element Ids and Classes to the list
+      const nodes = parentElement.getElementsByTagName('*');
+      for (let i = 0; i < nodes.length; i++) {
+        const id = nodes[i].id;
+        if ( !contains('#' + id, selectorTextArr) ) {
+          selectorTextArr.push( '#' + id );
+        }
+
+        const classes = nodes[i].classList;
+        for (let c = 0; c < classes.length; c++) {
+          if ( !contains('.' + classes[c], selectorTextArr) ) {
+            selectorTextArr.push( '.' + classes[c] );
+          }
+        }
+      }
+
+      // Extract CSS Rules
+      let extractedCSSText = '';
+      for (let i = 0; i < document.styleSheets.length; i++) {
+        const s = <CSSStyleSheet>document.styleSheets[i];
+
+        try {
+          if (!s.cssRules) { continue; }
+        } catch ( e ) {
+          if (e.name !== 'SecurityError') { throw e; } // for Firefox
+          continue;
+        }
+
+        const cssRules = s.cssRules;
+        for (let r = 0; r < cssRules.length; r++) {
+          if ( contains( (<CSSStyleRule>cssRules[r]).selectorText, selectorTextArr ) ) {
+            extractedCSSText += cssRules[r].cssText;
+          }
+        }
+      }
+
+
+      return extractedCSSText;
+
+      function contains(str, arr) {
+        return arr.indexOf( str ) === -1 ? false : true;
+      }
+
+    }
+
+    function appendCSS( cssText, element ) {
+      const styleElement = document.createElement('style');
+      styleElement.setAttribute('type', 'text/css');
+      styleElement.innerHTML = cssText;
+      const refNode = element.hasChildNodes() ? element.children[0] : null;
+      element.insertBefore( styleElement, refNode );
     }
   }
 }

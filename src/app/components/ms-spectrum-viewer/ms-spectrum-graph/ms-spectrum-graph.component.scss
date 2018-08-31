@@ -1,0 +1,42 @@
+/deep/ svg {
+  text.label-text {
+    font-size: 7pt;
+  }
+
+  circle.label-point {
+    stroke: black;
+    stroke-width: 0.5px;
+    fill: dodgerblue;
+  }
+
+  text {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  text::selection {
+    background: none;
+  }
+
+  .background rect {
+    fill: transparent;
+    stroke: black;
+    stroke-width: 0.5px;
+  }
+}
+
+/deep/ line.guide-line {
+  stroke: black;
+  stroke-width: 1px;
+}
+
+/deep/ line.b-ion {
+  stroke-width: 2;
+  stroke: red;
+};
+/deep/ line.y-ion {
+  stroke-width: 2;
+  stroke: blue;
+}
