@@ -110,7 +110,7 @@ function createMenu(w) {
         {
           label: 'MS-Reformat',
           click() {
-            navWin('msreformat');
+            // navWin('msreformat');
           }
         },
         {
@@ -126,9 +126,6 @@ function createMenu(w) {
   w.setMenu(Menu.buildFromTemplate(template));
 }
 
-function navWin(route) {
-  win.webContents.send('nav', route);
-}
 
 function navMS() {
   const arg = 'msmsbrowser';

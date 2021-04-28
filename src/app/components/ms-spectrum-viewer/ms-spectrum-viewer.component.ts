@@ -1,7 +1,7 @@
 import {Component, OnInit, Output} from '@angular/core';
-import {FileService} from "../../providers/file.service";
-import {WebSocketService} from "../../providers/web-socket.service";
-import {MsDataService} from "../../helper/ms-data.service";
+import {FileService} from '../../providers/file.service';
+import {WebSocketService} from '../../providers/web-socket.service';
+import {MsDataService} from '../../helper/ms-data.service';
 
 
 @Component({
@@ -9,7 +9,7 @@ import {MsDataService} from "../../helper/ms-data.service";
   templateUrl: './ms-spectrum-viewer.component.html',
   styleUrls: ['./ms-spectrum-viewer.component.scss']
 })
-export class MsSpectrumViewerComponent implements OnInit{
+export class MsSpectrumViewerComponent implements OnInit {
 
   constructor(private fileService: FileService, private webSocket: WebSocketService, private msData: MsDataService) {
 
@@ -25,7 +25,7 @@ export class MsSpectrumViewerComponent implements OnInit{
   getSVG(event) {
     const picked = this.fileService.save();
     if (picked !== null) {
-      this.webSocket.sendForSavingSVG({job: 'savesvg', data: {filePath: picked, fileContent: event}})
+      this.webSocket.sendForSavingSVG({job: 'savesvg', data: {filePath: picked, fileContent: event}});
     }
   }
 

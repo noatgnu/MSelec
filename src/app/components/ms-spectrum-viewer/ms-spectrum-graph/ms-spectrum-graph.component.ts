@@ -61,7 +61,7 @@ export class MsSpectrumGraphComponent implements OnInit, OnDestroy {
       if (this.parentNativeEnviroment != null) {
         if (this.svg === undefined) {
           this.svg = d3Local.select(this.parentNativeEnviroment).append('svg')
-            .attr('width', frame.width).attr('height', frame.height)
+            //.attr('width', frame.width).attr('height', frame.height)
             .attr('viewBox', '0 0 1820 450');
           svg = this.svg;
         } else {
